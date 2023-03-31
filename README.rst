@@ -34,9 +34,9 @@ Getting information on fitted analytical beam models:
 =====================================================
 
 
-Published under the CeCILL-B FREE SOFTWARE LICENSE
+Published under the MIT LICENSE
 
-GitHub repo:
+GitHub repo: https://github.com/FaWa70/analy_faisc_py_gui
 
 Documentation: Some text on tab 5, but a lot of work is still necessary here.
 
