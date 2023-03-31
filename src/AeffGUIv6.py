@@ -35,7 +35,7 @@ import openpyxl as xl  # for writing excel files with multi line header
 
 
 # define global variables at module level (if useful for shorter names compared to definition in __init__)
-rel_sat_limit = 0.95  # 1.00 is really saturated
+rel_sat_limit = 0.950  # 1.00 is really saturated
 confidence = 0.6827
 crop_ulx = 0
 crop_uly = 0
