@@ -26,7 +26,7 @@ from scipy.optimize import minimize, leastsq   # use minimize_skalar ?
 from scipy.stats import sem, t  # t is the student t distribution (all sorts in the object)
 from skimage.measure import block_reduce as SkiMeasBR
 
-from src.fitting_module_v2 import gauss2D_cst_offs, sot_r_gau, gaussEll2D_cst_offs
+from fitting_module_v2 import gauss2D_cst_offs, sot_r_gau, gaussEll2D_cst_offs
 
 import numpy as np
 import datetime as dt

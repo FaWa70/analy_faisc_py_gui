@@ -659,14 +659,29 @@ class FitModel:
         value_3 = abs(y[len(y) // 2 - 1] - y[len(y) // 2]) / y[len(y) // 2]
         return min([value_1, value_2, value_3])
 
+
 class Gauss_w_z_evol(FitModel):
-    def f(self, x_values, paras):  # x_values and peak_flu have to be positive
-        if not isinstance(x_values, np.ndarray):
-            x_values = np.array(x_values)
-        y_values = np.zeros(x_values.shape)  # replace this
-        return y_values
+    """
+    Gives the way how the waist evolves with propagation. (The caustic)
+    z0: position of the waist
+    M2: beam quality
+    la0: vacuum wavelength
+    w0: smallest waist
+    """
+    def f(self, z_values, paras):  # M2 has to be 1 or larger
+        if not isinstance(z_values, np.ndarray):
+            z_values = np.array(z_values)
+
+        z0 = paras[0]
+        M2 = paras[1]
+        la0 = paras[2]
+        w0 = paras[3]
+        w_values = w0 * np.sqrt(1 + ((z_values - z0) / (
+                                      np.pi * w0**2 / (la0*M2) ))**2)
+        return w_values
 
 gauss_w_z_evol = Gauss_w_z_evol()
+
 
 class SOT_round_gau(FitModel):
     """ Suface over threshold (sot) for a round Gaussian with peak fluence peak_flu and waist w (these are the

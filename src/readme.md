@@ -29,22 +29,25 @@ pour la droite. Mais ça reste à voir.
 keep space for output typically <4.3 digits and header) 
 
 # Ideas:
-- Add a tab to export a nice representation of the beam that can 
-be used in reports and papers. This needs a scale! (2D, 3D).
-Best make it tab5 and set the documentation tab to tab6
-- Add a tab to scan through several wcf files or trees of folders
-in order to make w(z) fits with M² and w0... tab 4 starts to work 
-- Add a tab with a short user manual... started tab5
+- In tab2, *add the evaluation of D4sigma values* for round or elliptical spots. 
+For the formulas, see: https://en.wikipedia.org/wiki/Beam_diameter 
+- Add the possibility to export a nice representation of the beam that can 
+be used in reports and papers. This needs a scale! (2D, 3D). 
+Maybe on tab2 or a new one inbetween 2 and 3? Until then do it in Gwyddion.
+- In tab 4, *add w(z) fits with M² parameter* 
+(How to choose the data to use? Allow outlier removal?) 
+- Add a tab with a short user manual... *started tab5* but has problems with 
+picture display
 - Tab2 Add automatic zoom on cross-sections: all, beam, maximum. 
 Or keep manual zoom when changing image.
-- Tab2 Add thresholded surface measurement (done), maybe even with 
+- Tab2 Add thresholded surface measurement (*done*), maybe even with 
 shape fit (rectangle, circle)
-- Tab2 Display a warning on tab 2 and in the exported file if the 
-image contains saturated pixels... done on tab2, maybe not in exported file
-- Transform the vertical condition GL > FitLimit to a similar 
+- Tab3 and 4, in exported file display a warning if the image (or the stack) 
+contains saturated pixels
+- In tab2, transform the vertical condition GL > FitLimit to a similar 
 horizontal condition. The vertical condition uses only upper 
 noisy data on the border of the good zone.
-- Implement masking of pixels in tab1 and 2
+- Implement masking of pixels in tab1 and 2, with interpolation under it.
 - Add calculation of the uncertainty in Aeff for every image: 
 The maximum from a mean or a fit gets an uncertainty. The 
 uncertainty of the energy depends on the uncertainty in the offset,
