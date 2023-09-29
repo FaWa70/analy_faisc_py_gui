@@ -1115,14 +1115,12 @@ class MyTableWidget(QWidget):
 
     def display_down(self):
         print('display_down called')
-
         if self.SlNum.value() > 1:
             self.SlNum.setValue(self.SlNum.value() - 1)
             self.rdbtFbF.setChecked(True)  # to refresh the display
 
     def display_up(self):
         print('display_up called')
-
         if self.SlNum.value() < imStack.shape[2]:
             self.SlNum.setValue(self.SlNum.value() + 1)
             self.rdbtFbF.setChecked(True)  # to refresh the display
@@ -1168,7 +1166,7 @@ class MyTableWidget(QWidget):
         :return:
         """
         print('load_stack called')
-        global imStack
+        global imStack, imStack_fns
         global roiS
         global masked, mask_during_modif
         global im1_width, im1_height  # size of the original images
@@ -1251,6 +1249,7 @@ class MyTableWidget(QWidget):
 
         else:  # Is this a folder of valid files?  globals:  dirname, baseName, f_name
             imStack = []  # start as list, will be transformed to
+            imStack_fns = []
             try:  # check if the selected image works
                 im = plt.imread(f_name)  # read selected file first ATTENTION MAY BE skimage reader is better
                 # there are cases where the plt reader does not keep the right data format
@@ -1258,6 +1257,7 @@ class MyTableWidget(QWidget):
                 imTy = str(im.dtype)
                 sat_value = np.iinfo(im.dtype).max  # give feed back on image dtype
                 imStack.append(im)
+                imStack_fns.append(f_name)
             except:  # the selected file is not a readable image
                 if analyze_all_files_check:
                     main.statBar.showMessage(statusbarmessage+'\tThe selected file is not a readable image')
@@ -1277,11 +1277,12 @@ class MyTableWidget(QWidget):
                 QApplication.processEvents()
 
                 if os.path.normpath(this_file) == os.path.normpath(f_name):
-                    continue
+                    continue  # Do not read again the file that is already in imStack
                 try:
                     im = plt.imread(this_file)
                     if (imSi == im.shape) and (str(im.dtype) == imTy):
                         imStack.append(im)
+                        imStack_fns.append(this_file)
                 except:
                     pass
             imStack = np.dstack(imStack)  # convert to numpy array
@@ -1517,7 +1518,8 @@ class MyTableWidget(QWidget):
                 self.LbImNo.setText("Image " + "\n" + "    " + str(number))
                 ImDisp1 = imStack[:, :, number - 1]  # make a view of the right image
                 self.showIm1(ImDisp1)  # show the image
-                self.rdbtFbF.setChecked(True) # for refresh display
+            self.LbFolderName.setLongText(imStack_fns[self.SlNum.value() - 1])
+            self.rdbtFbF.setChecked(True)  # for refresh display
         except NameError:  # necessary because the method is executed on initialisation
             return
 
