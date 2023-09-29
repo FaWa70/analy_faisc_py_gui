@@ -3,31 +3,39 @@
 <title></title>
 </head>
 <body>
+
+
 <h2>Aim of this program</h2>
-<p>This program aims to describe (peaked) spatial beam profiles of laser beams. 
-The first 3 tabs are used to analyze a stack of images that were all taken 
-at the same position with the same laser and setup settings. 
-(If all instruments were perfect, all images in a stack would be identical.) 
-In order to get the characteristic numbers of the beam profile and their 
-uncertainties we go through 3 steps, one per tab. </p>
-<p><b>TAB 1 (compulsory): </b>  Indicate the location of the images by selecting one 
-(loads all images of the same stack); crop them to a size that leaves 
-enough surface around the beam to determine the background level; select the 
-region of interest (ROI) that separates the beam zone from the background zone; 
-possibly smooth out isolated noise pixels 
-by median-filtering the images; possibly select the part of the stack that 
-contains valid images (exclude zero-images (compulsory) and background images 
-(optional)) if they are contained in a contiguous region of the stack. </p>
-<p><b>TAB 2 (compulsory): </b> Set the way how the good images of the stack should be analyzed. 
-Several options for determination of the background grey-level (GL) and the 
-maximum GL are available. You can also fit some analytic beam profiles to 
-your data. </p>
-<p><b>TAB 3: </b> Launch the stack analysis; inspect the histograms; possibly discard 
-some images based on the histograms (for example images with strong background or
-    with strangely small energy); possibly export an MS-Excel xlsx-file with the data. </p>
-<p>
-<p><b>TAB 4: </b> Launch the analysis of several stacks corresponding to different
-z positions; check out the z-curves; possibly export an MS-Excel xlsx-file with the data. </p>
+<p> This program aims to describe (peaked) spatial beam profiles of laser beams.
+    The first 3 tabs are used to analyze a stack of images that were all taken
+    at the same position with the same laser and setup settings.
+    (If all instruments were perfect, all images in a stack would be identical.)
+    In order to get the characteristic numbers of the beam profile and their
+    uncertainties we go through 3 steps, one per tab. </p>
+
+<p> <b>TAB 1 (compulsory): </b>  Indicate the location of the images by selecting
+    one (loads all images of the same stack); crop them to a size that leaves
+    enough surface around the beam to determine the background level; select the
+    region of interest (ROI) that separates the beam zone from the background zone;
+    possibly smooth out isolated noise pixels
+    by median-filtering the images; possibly select the part of the stack that
+    contains valid images (exclude zero-images (compulsory) and background images
+    (optional)) if they are contained in a contiguous region of the stack. </p>
+
+<p> <b>TAB 2 (compulsory): </b> Set the way how the good images of the stack
+    should be analyzed. Several options for determination of the background
+    grey-level (GL) and the maximum GL are available. You can also fit some
+    analytic beam profiles to your data. </p>
+
+<p> <b>TAB 3: </b> Launch the stack analysis; inspect the histograms; possibly
+    discard some images based on the histograms (for example images with strong
+    background or with strangely small energy); possibly export an MS-Excel
+    xlsx-file with the data. </p>
+
+<p> <b>TAB 4: </b> Launch the analysis of several stacks corresponding to
+    different z positions; check out the z-curves; possibly export an MS-Excel
+    xlsx-file with the data. </p>
+
 
 <h2>Tab1: Loading images and defining the ROI</h2>
 <p> The upper left button 'Load file' opens a file dialog. The program can read a
@@ -44,10 +52,12 @@ side. Using this feature can help to define the region the of interest without
 intersecting with the "foothills" of the beam profile (see figure below). 
 A tiled overview-mode of all downsampled stack images is also available. 
 (Radio buttons below the slider.)</p>
+
 <p>
-<img src="/doc_files/banana_select_roi.jpg" alt="Safely selecting a ROI" width="500"/>
+<img src="banana_select_roi.jpg" alt="Safely selecting a ROI" width="500"/>
 <br>FIG 1: <i>How to use the color map limits to better define the ROI.</i>
 </p>
+
 <p>Up to now the Pixel size input under the 'Load file' button is not used.
 All lateral output is in pixels (px).
 All vertical output is in grey levels (GL). </p>
@@ -80,40 +90,61 @@ the label below the right arrow button above the image. The relative saturation 
 noise) is to use median filtering of the images. If this does not help, it is useless to
 go further. Acquire new images.</p>
 
+
 <h2>Tab2: Define the analyses to run</h2>
-<p> Once the pretreatment is finished and the zero images are excluded, the images can be 
-analyzed using the controls in tab2. Some controls do not trigger an update of the tab. 
-To force an update, change image by using the slider or the arrow buttons. </p>
-<p>First the background needs to be determined and subtracted. If the background is not 
-homogeneous and you have a background image, use the controls in the first line:
-Switch to 'Use a dark image' and give the number of the dark image (look it up in tab 1). </p>
-<p>In the second line you choose the way how the homogeneous background correction is 
-calculated. The simplest and fastest way is to use the average value inside or outside the 
-ROI defined in tab 1. (If the red frame is around the beam, use 'outside', if the red frame 
-is besides the beam use 'inside'.) The 'autocrop' which is used to generate a black frame 
-of same width on all sides can be disabled using the checkbox. Disabling autocrop is 
-necessary if the ROI is besides the beam. </p>
-<p>The second method 'Use A<sub>eff</sub>-curve fit' needs some more explanation: The effective surface
-area, A<sub>eff</sub>, of a laser beam is defined as the proportionality factor between pulse energy 
-(Ep) and peak fluence (F): F = Ep/A<sub>eff</sub> (Or power (P) and peak irradiance (I): I = P/A<sub>eff</sub>) 
-From a beam image without background and without noise A<sub>eff</sub> can be obtained by A<sub>eff</sub> = Ep/F 
-= sum(pixels) / max(pixels). If the image is background corrected, adding more pixels of the
-background in the calculation does not change the value of A<sub>eff</sub>. Thus, the A<sub>eff</sub>-curve:
-A<sub>eff</sub>(image_size) is flat. This fact can be used to retrieve the value of the homogeneous 
-background correction: (i) take a guess for the background, (ii) subtract it from the image, 
-(iii) make the A<sub>eff</sub>-curve by cropping the borders of the image and (iv) evaluate the slope 
-of the line through the last points of the A<sub>eff</sub>-curve. If the 'A<sub>eff</sub>-curve fit' is used to 
-determine the background level, the inside/outside control is not taken into account. </p>
-<p>In any case, it's a good idea to take a look at the A<sub>eff</sub>-curve (shown by default on the right 
-graph). If the last points of the A<sub>eff</sub>-curve 
-are not on a straight line, this is a sign of either inhomogeneous background or too close 
-cropping (the edge of the image contains energy from the pulses low foothills). </p>
-<p>After defining the background definition method, the method for the definition of the maximum 
-has to be chosen from the upper right combobox. The choice should consider the number of pixels 
-that are close to the maximum of the beam. If there are many pixels close to the maximum, the 
-pixel with the highest gray level (Max Pixel) is likely to be a noise pixel and some smoothing 
-method should be used ('...mean...' or 'cap fit ...') to avoid over-estimation of the
-maximal GL. If the pixels are large with respect to the
-beam size, smoothing needs to be avoided to avoid under-estimation of the maximal GL</p>
+<p> Once the pretreatment is finished and the zero images are excluded,
+    the images can be analyzed using the controls in tab2. Some
+    controls do not trigger an update of the tab.
+    To force an update, change image by using the slider or the arrow buttons. </p>
+<p> First the background needs to be determined and subtracted. If the
+    background is not homogeneous and you have a background image, use the
+    controls in the first line: Switch to 'Use a dark image' and give the number
+    of the dark image (look it up in tab 1). </p>
+<p> In the second line you choose the way how the homogeneous background
+    correction is calculated. The simplest and fastest way is to use the average
+    value inside or outside the ROI defined in tab 1. (If the red frame is around
+    the beam, use 'outside', if the red frame is besides the beam use 'inside'.)
+    The 'autocrop' which is used to generate a black frame of same width on
+    all sides can be disabled using the checkbox. Disabling autocrop is necessary
+    if the ROI is besides the beam. </p>
+<p> The second method 'Use A<sub>eff</sub>-curve fit' needs some more explanation:
+    The effective surface area, A<sub>eff</sub>, of a laser beam is defined as the
+    proportionality factor between pulse energy (Ep) and peak fluence (F):
+    F = Ep/A<sub>eff</sub> (Or power (P) and peak irradiance (I): I = P/A<sub>eff</sub>)
+    From a beam image without background and without noise A<sub>eff</sub> can be
+    obtained by A<sub>eff</sub> = Ep/F = sum(pixels) / max(pixels). If the image is
+    background corrected, adding more pixels of the background in the calculation does
+    not change the value of A<sub>eff</sub>. Thus, the A<sub>eff</sub>-curve:
+    A<sub>eff</sub>(image_size) is flat. This fact can be used to retrieve the value
+    of the homogeneous background correction:
+    (i) take a guess for the background,
+    (ii) subtract it from the image,
+    (iii) make the A<sub>eff</sub>-curve by cropping the borders of the image and
+    (iv) evaluate the slope of the line through the last points of the
+    A<sub>eff</sub>-curve. If the 'A<sub>eff</sub>-curve fit' is used to
+    determine the background level, the inside/outside control is not taken into account. </p>
+<p> In any case, it's a good idea to take a look at the A<sub>eff</sub>-curve
+    (shown by default on the right graph). If the last points of the A<sub>eff</sub>-curve
+    are not on a straight line, this is a sign of either inhomogeneous background or
+    too close cropping (the edge of the image contains energy from the pulses
+    low foothills). </p>
+<p> After defining the background definition method, the method for the definition of the
+    maximum has to be chosen from the upper right combobox. The choice should consider
+    the number of pixels that are close to the maximum of the beam. If there are many pixels
+    close to the maximum, the pixel with the highest gray level (Max Pixel) is likely
+    to be a noise pixel and some smoothing method should be used ('...mean...' or
+    'cap fit ...') to avoid over-estimation of the maximal GL. If the pixels are large
+    with respect to the beam size, smoothing needs to be avoided to avoid
+    under-estimation of the maximal GL</p>
+
+
+<h2>Tab3: Run analysis on one stack of images</h2>
+<p> Once you defined which analyses should be used (on tab 2), you can run these
+    on all images of a stack (i.e. all files in one folder, usually all files recorded at
+    one z-position). The graphs will show the histograms of the quantities chosen in the
+    checkboxes on the left side. Statistical relationships between the quantities can be
+    explored by right-clicking on one or more histogram bars. The images in the bar will
+    be removed from all histograms. Right-clicking again will cancel the filter and put
+    the images back in the set of good images. </p>
 </body>
 </html>

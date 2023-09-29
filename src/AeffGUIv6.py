@@ -1326,9 +1326,9 @@ class MyTableWidget(QWidget):
             # setting the maximum value of the vertical scale spin boxes
             self.SbVmin.setRange(0, sat_value)
             self.SbVmax.setRange(0, sat_value)
-            self.SbVmin.setSingleStep(vMaxMax // 100)
-            self.SbVmax.setSingleStep(vMaxMax // 100)
-            self.SbVmax.setValue(vMaxMax)
+            self.SbVmin.setSingleStep(int(vMaxMax // 100))
+            self.SbVmax.setSingleStep(int(vMaxMax // 100))
+            self.SbVmax.setValue(int(vMaxMax))
             self.firstLoad = False
 
             # Spinbox initialisation for image choice

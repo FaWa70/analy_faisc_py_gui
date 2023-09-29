@@ -30,7 +30,9 @@ keep space for output typically <4.3 digits and header)
 
 # Ideas:
 - In tab2, *add the evaluation of D4sigma values* for round or elliptical spots. 
-For the formulas, see: https://en.wikipedia.org/wiki/Beam_diameter 
+For the formulas, see: https://en.wikipedia.org/wiki/Beam_diameter puis 
+https://www.iso.org/obp/ui/fr/#iso:std:iso:11146:-1:ed-2:v1:fr pour passer du D4sigma 
+au M².
 - Add the possibility to export a nice representation of the beam that can 
 be used in reports and papers. This needs a scale! (2D, 3D). 
 Maybe on tab2 or a new one inbetween 2 and 3? Until then do it in Gwyddion.

@@ -1,0 +1,19 @@
+# conda env create --name my-env-name --file environment.yml(with path)
+# conda remove --name my-env-name --all and after delete the env directory
+channels:
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - python==3.10  # 3.10.0
+  - numpy  # 1.26.0
+  - scipy  # 1.11.3
+  - pyqt  # 5.15.9
+  - matplotlib  # 3.8.0
+  - scikit-image  # 0.21.0
+  - openpyxl  # 3.1.2
+  - imageio  # 2.31.1
+  - pip
+  - pip:
+    - laserbeamsize  # 2.0.3
+    
