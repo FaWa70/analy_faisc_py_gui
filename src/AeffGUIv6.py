@@ -2087,8 +2087,11 @@ class MyTableWidget(QWidget):
                 # dn and bn are the local versions of dirname2 and baseName2
                 dn2 = os.path.normpath(f_name).split("\\")
                 dn2 = "\\".join(dn2[:-2])  # gives outer directory
-                z_position = extract_z_from_filename_for_tiff(os.path.split(dirname)[-1])
-                bn2 = "z = " + str(z_position) + " - "
+                try:
+                    z_position = extract_z_from_filename_for_tiff(os.path.split(dirname)[-1])
+                    bn2 = "z = " + str(z_position) + " - "
+                except IndexError:
+                    bn2 = "no z info - "
                 fpath = os.path.normpath((dn2 + "/" + str(bn2) + " " + tod_str + ".xlsx"))
             else:  # launched by tab 4
                 fpath = os.path.normpath((dirname2 + "/" + str(baseName2) + " " + tod_str + ".xlsx"))
