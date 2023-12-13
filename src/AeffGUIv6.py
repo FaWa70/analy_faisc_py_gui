@@ -347,10 +347,10 @@ class MyTableWidget(QWidget):
             grid1.addWidget(self.LbPiSiUnit, 2, 2)
 
             # Navigate in stack
+            grid1.addWidget(self.LbImNo, 3, 0, 1, 1)
             grid1.addWidget(self.BtNumDwn, 3, 1)
             grid1.addWidget(self.SlNum, 3, 2, 1, 1)
             grid1.addWidget(self.BtNumUp, 3, 3)
-            grid1.addWidget(self.LbImNo, 3, 0, 1, 1)
 
             # saturation
             grid1.addWidget(self.LbPixSat, 4, 3, 1, 2)
@@ -1371,8 +1371,11 @@ class MyTableWidget(QWidget):
                 sat_im_count += 1
 
         if sat_pix_count > 0:
-            self.LbPixSat.setText("ATTENTION {:d} saturated pixels found in {:d} images".
-                                  format(sat_pix_count, sat_im_count))
+            # Display bold red text:
+            # setText('<b> <span style="color:#f00;">SATURATED IMAGE</span> </b>')
+            self.LbPixSat.setText(
+                '<b> <span style="color:#f00;">ATTENTION {:d} saturated pixels found in {:d} images</span> </b>'.
+                format(sat_pix_count, sat_im_count))
         else:
             self.LbPixSat.setText("All images are ok (no saturation found)")
 
@@ -2145,7 +2148,7 @@ class MyTableWidget(QWidget):
 
         export_arr = np.ones((len(list_z_positions), 2*len(header_list)+2)) * np.nan
         for z_idx, res_dict in enumerate(final_results_list):
-            export_arr[z_idx, 0] = len(res_dict[header_list[0]]) - 1  # get nb of processed images for this z
+            export_arr[z_idx, 0] = len(res_dict[header_list[0]])  # get nb of processed images for this z
             export_arr[z_idx, 1] = list_z_positions[z_idx]
             for h_idx, header in enumerate(header_list):
                 #find index of header
@@ -3356,6 +3359,7 @@ class MyTableWidget(QWidget):
                              color=this_col,
                              label=this_cobo.currentText())
                 # this_ax.legend(loc=(x_positions.max()+1, y_positions.min()))  # Does not work with tight_layout
+                this_ax.invert_yaxis()
                 this_ax.set_title("Position of maximum (depointing)")
                 this_ax.set_xlabel("Horizontal position (px)")
                 this_ax.set_ylabel("Vertical position (px)")
@@ -3463,6 +3467,7 @@ class MyTableWidget(QWidget):
                 mean = y.mean()  # to normalize the display
                 y = y / mean * 100
                 y_err = y_err / mean * 100
+                this_ax.set_ylabel("Energy (% of mean)")
 
             this_ax.errorbar(z, y, y_err, linestyle='None', marker='x', color=this_col)
             this_ax.set_xlabel("Distance on optical axis z (mm)")
