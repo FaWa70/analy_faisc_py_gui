@@ -25,6 +25,7 @@ from scipy import ndimage as ndi
 from scipy.optimize import minimize, leastsq   # use minimize_skalar ?
 from scipy.stats import sem, t  # t is the student t distribution (all sorts in the object)
 from skimage.measure import block_reduce as SkiMeasBR
+from skimage.morphology import (erosion, dilation, binary_opening, disk)
 
 from fitting_module_v2 import gauss2D_cst_offs, sot_r_gau, gaussEll2D_cst_offs
 
@@ -2497,6 +2498,25 @@ class MyTableWidget(QWidget):
         self.get_aeffg()  # can use b_max[2] or b_fit value as max
         ti0 = ti.time() - ti0
 
+    def vertical_to_horizontal(self, mountain, lower_limit):
+        """
+        Returns the indices to use like mountain[idxs] to address the pixels of
+        mountain that are higher than threshold and the ones that are in the same
+        region. vertical_to_horizontal uses erosion and dilation to close holes in the region.
+        Thus hopefully the noise problems close to problems are minimized. Execution takes about
+        10 ms for 400 x 400 pixel images
+        :param mountain: Grayscale image (numpy array)
+        :param lower_limit: A real number
+        :return idxs: Binary array to be used as index for numy array
+        """
+        idxs = np.zeros(mountain.shape, dtype='bool')
+        idxs[mountain > lower_limit] = True
+
+        idxs = dilation(idxs, disk(2))  # , square(3) is better than standard cross
+        idxs = erosion(idxs, disk(2))  # diamond(2) is not better than standard cross
+        idxs = binary_opening(idxs)
+        return idxs
+
     def get_beam_max(self):
         print("get_beam_max called")
 
@@ -2509,9 +2529,9 @@ class MyTableWidget(QWidget):
             (b_max[1], b_max[0]) = np.unravel_index(im_to_show2.argmax(), im_to_show2.shape)
             (bmx, bmy) = b_max[0:2].round().astype("int")  # b_max[0] = x-position
             b_max[2] = im_to_show2[bmy - 1: bmy + 2, bmx - 1: bmx + 2].mean()
-            p_ini = [b_max[2]*0.99, # max_ini = 99% of max pixel
-                     b_max[0]-1.5, # x_0 = a bit away from the max pixel
-                     b_max[1]-1.5, # y_0 = a bit away from the max pixel
+            p_ini = [b_max[2]*0.99,  # max_ini = 99% of max pixel
+                     b_max[0]-1.5,  # x_0 = a bit away from the max pixel
+                     b_max[1]-1.5,  # y_0 = a bit away from the max pixel
                      np.mean(im_to_show2.shape)/10]  #  supposing there are 5 beam diameters on the image
             XX, YY = np.meshgrid(range(im_to_show2.shape[1]), range(im_to_show2.shape[0]))
 
@@ -2524,12 +2544,14 @@ class MyTableWidget(QWidget):
                 cap_factor = 0.8
             elif self.cob_max.currentText() == 'Cap fit 70%':
                 cap_factor = 0.7
+            upper_zone_idxs = self.vertical_to_horizontal(im_to_show2, b_max[2] * cap_factor)
+            # upper_zone_idxs = im_to_show2 > b_max[2] * cap_factor  # uses vertical criterion
             p_fit, success = leastsq(
                 gauss2D_cst_offs.resid_2D,
                 p_ini,
-                args=(XX[im_to_show2 > b_max[2] * cap_factor],
-                      YY[im_to_show2 > b_max[2] * cap_factor],
-                      im_to_show2[im_to_show2 > b_max[2] * cap_factor]),
+                args=(XX[upper_zone_idxs],
+                      YY[upper_zone_idxs],
+                      im_to_show2[upper_zone_idxs]),
                 full_output=False)
 
             if success in [1, 2, 3, 4]:  # If success is equal to 1, 2, 3 or 4, the solution was found.
