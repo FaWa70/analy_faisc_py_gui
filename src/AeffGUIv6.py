@@ -1829,6 +1829,8 @@ class MyTableWidget(QWidget):
                           im_to_show2[(im_to_show2 > b_fits[0][col_idx]["lim"] * b_max[2])
                                       & (im_to_show2 < rel_sat_limit * sat_value - backg)]),
                     full_output=False)
+                # saturated values are not used for the fit, thus even saturated pictures
+                # may be fitted reasonably well.
                 if success in [1, 2, 3, 4]:  # If success is equal to 1, 2, 3 or 4, the solution was found.
                     # save old values
                     b_fits[1:] = b_fits[:-1]  # drop the last entry. First entry is now double

@@ -81,6 +81,28 @@ Functionality description see below.
 Plots the Aeff-curve 
 and gives output in the console 
 
+# Implemented features
+## Preprocessing the images
+## Background removal
+## Energy calculation
+## Maximum estimation
+## Fitting with model beams
+Fitting of the theoretical beams on tab 2 ignores "saturated" pixels. 
+Thus even saturated beams can be fitted (with less precision)
+Fitting also ignores pixels with low intensity (below the threshold).
+### Available model beams
+* Round Gaussian to fit the beam image.
+* Elliptical Gaussian to fit the beam image.
+* Gaussian SOT-formula to fit the experimental SOT
+### Checking the fit results
+## Calculation of the surface over threshold (SOT)
+## Calculation of the surface over a fixed threshold (SOfT)
+## Inspecting the histograms of the beam parameters
+### Exploring correlations by exclusion of some images
+Crtl-click on a histogram bar to exclude the corresponding images in 
+all histograms. (The bar is no longer filled). Crtl-click again on the 
+completely empty bar to bring them back. 
+##
 
 # Version 2: Usage
 ## In tab 1: Load and pre-process images
